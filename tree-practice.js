@@ -22,16 +22,12 @@ function findMaxBST(rootNode) {
 
 function findMinBT(rootNode) {
   let queue = [rootNode];
-
   let arr = [];
 
   while (queue.length) {
     let node = queue.shift();
-
     arr.push(node.val);
-
     if (node.left) queue.push(node.left);
-
     if (node.right) queue.push(node.right);
   }
   return Math.min(...arr);
@@ -54,11 +50,20 @@ function findMaxBT(rootNode) {
   return Math.max(...arr);
 }
 
-function getHeight(rootNode) {}
+function getHeight(rootNode) {
+  if (!rootNode) {
+    return -1;
+  }
+  if (!rootNode.left && !rootNode.right) {
+    return 0;
+  }
+  return 1 + Math.max(getHeight(rootNode.left), getHeight(rootNode.right));
+}
 
 function balancedTree(rootNode) {
-  if (rootNode.left)
-    Math.log2(countNodes(rootNode.left)) >= getHeight(rootNode.left);
+  if (rootNode.left) {
+    return Math.log2(countNodes(rootNode.left)) >= getHeight(rootNode.left);
+  }
   return Math.log2(countNodes(rootNode)) >= getHeight(rootNode);
 }
 
