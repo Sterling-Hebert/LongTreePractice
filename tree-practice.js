@@ -54,42 +54,66 @@ function findMaxBT(rootNode) {
   return Math.max(...arr);
 }
 
-function getHeight(rootNode) {
-  // Your code here
-}
+function getHeight(rootNode) {}
 
 function balancedTree(rootNode) {
-  // Your code here
+  if (rootNode.left)
+    Math.log2(countNodes(rootNode.left)) >= getHeight(rootNode.left);
+  return Math.log2(countNodes(rootNode)) >= getHeight(rootNode);
 }
 
 function countNodes(rootNode) {
-  // Your code here
+  if (!rootNode) return 0;
+
+  return 1 + countNodes(rootNode.left) + countNodes(rootNode.right);
 }
 
 function getParentNode(rootNode, target) {
-  // Your code here
+  if (rootNode.val === target) return null;
+
+  let stack = [rootNode];
+
+  while (stack.length > 0) {
+    let current = stack.pop();
+
+    if (
+      (current.left && current.left.val === target) ||
+      (current.right && current.right.val === target)
+    ) {
+      return current;
+    }
+
+    if (current.left) stack.push(current.left);
+    if (current.right) stack.push(current.right);
+  }
+
+  return undefined;
 }
 
 function inOrderPredecessor(rootNode, target) {
-  // Your code here
+  let current = rootNode;
+  let stack = [];
+  let predecessor = null;
+
+  while (true) {
+    if (current) {
+      stack.push(current);
+      current = current.left;
+    } else if (!current && stack.length > 0) {
+      current = stack.pop();
+      if (current.val === target) {
+        if (!predecessor) return null;
+        return predecessor.val;
+      }
+      predecessor = current;
+      current = current.right;
+    } else {
+      break;
+    }
+  }
 }
 
-function deleteNodeBST(rootNode, target) {
-  // Do a traversal to find the node. Keep track of the parent
-  // Undefined if the target cannot be found
-  // Set target based on parent
-  // Case 0: Zero children and no parent:
-  //   return null
-  // Case 1: Zero children:
-  //   Set the parent that points to it to null
-  // Case 2: Two children:
-  //  Set the value to its in-order predecessor, then delete the predecessor
-  //  Replace target node with the left most child on its right side,
-  //  or the right most child on its left side.
-  //  Then delete the child that it was replaced with.
-  // Case 3: One child:
-  //   Make the parent point to the child
-}
+function deleteNodeBST(rootNode, target) {}
 
 module.exports = {
   findMinBST,
